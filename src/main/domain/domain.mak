@@ -1,0 +1,30 @@
+
+DOMAIN_FILE_EXTENTION 	= c
+DOMAIN_SRC_PATH     	= $(MAIN_DOMAIN_PATH)/source
+DOMAIN_OBJS_PATH    	= $(MAIN_OBJS_PATH)/DOMAIN
+DOMAIN_DEPS_PATH		= $(MAIN_DEPS_PATH)/DOMAIN
+DOMAIN_CFLAGS			= $(MAIN_CODE_CFLAGS)
+DOMAIN_DEPEND_CFLAGS	= $(MAIN_DEPEND_CFLAGS)
+
+DOMAIN_INCLUDE = $(addprefix -I, $(DOMAIN_INCLUDE_PATH))
+DOMAIN_SRCS   = $(wildcard $(DOMAIN_SRC_PATH)/*.$(DOMAIN_FILE_EXTENTION))
+DOMAIN_OBJS   = $(addprefix $(DOMAIN_OBJS_PATH)/,$(notdir $(subst .$(DOMAIN_FILE_EXTENTION),.o,$(DOMAIN_SRCS))))
+DOMAIN_DEPS	  = $(addprefix $(DOMAIN_DEPS_PATH)/,$(notdir $(subst .$(DOMAIN_FILE_EXTENTION),.d,$(DOMAIN_SRCS))))
+ALL_OBJS 	 += $(DOMAIN_OBJS)
+ALL_DEPS	 += $(DOMAIN_DEPS)
+
+$(DOMAIN_DEPS_PATH)/%.d : $(DOMAIN_SRC_PATH)/%.$(DOMAIN_FILE_EXTENTION)
+	@$(MKDIR) $(DOMAIN_DEPS_PATH)
+	@echo Making $(notdir $@) ...
+	@$(CC) $(DOMAIN_DEPEND_CFLAGS) $(DOMAIN_INCLUDE) $< | sed 's/$*.o:/$(subst /,\/,$(DOMAIN_OBJS_PATH))\/$*.o $(subst /,\/,$(DOMAIN_DEPS_PATH))\/$*.d :/g' > $@
+	@echo Done!
+
+-include $(DOMAIN_DEPS)
+
+$(DOMAIN_OBJS_PATH)/%.o : $(DOMAIN_SRC_PATH)/%.$(DOMAIN_FILE_EXTENTION)
+	@$(MKDIR) $(DOMAIN_OBJS_PATH)
+	@echo Making $(notdir $@) ...
+	@$(CC) $(DOMAIN_CFLAGS) $(DOMAIN_INCLUDE) $< -c -o $@
+	@echo Done!
+
+

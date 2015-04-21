@@ -1,0 +1,24 @@
+TEST_CODE_CFLAGS				= $(CFLAGS) -Wwrite-strings
+TEST_DEPEND_CFLAGS				= $(TEST_CODE_CFLAGS) $(DEPEND_CFLAGS)
+TEST_OBJS_PATH					= $(OBJS_PATH)/TEST
+TEST_DEPS_PATH					= $(DEPS_PATH)/TEST
+TEST_RESS_PATH					= $(RESS_PATH)/TEST
+TEST_PUB_INCLUDE_PATH			= $(TEST_CODE_PATH) $(TEST_CODE_PATH)/gtest/include
+LINK_FLAGS					   += -L$(TEST_CODE_PATH)/gtest/lib/$(OS_TYPE) -lgtest -lgtest_main -lpthread
+
+# service layer 
+TEST_SERVICE_PATH				= $(TEST_CODE_PATH)/service
+TEST_SERVICE_MAKEFILE			= $(TEST_SERVICE_PATH)/service.mak
+
+# TEST code application
+TEST_APPLICATION_PATH 			= $(TEST_CODE_PATH)/application
+TEST_APPLICATION_MAKEFILE 		= $(TEST_APPLICATION_PATH)/application.mak
+
+#  TEST code domain
+TEST_DOMAIN_PATH				= $(TEST_CODE_PATH)/domain
+TEST_DOMAIN_MAKEFILE			= $(TEST_DOMAIN_PATH)/domain.mak
+
+# TEST code infrastructure
+TEST_INFRASTRUCTURE_PATH		= $(TEST_CODE_PATH)/infrastructure
+TEST_INFRASTRUCTURE_MAKEFILE	= $(TEST_INFRASTRUCTURE_PATH)/infrastructure.mak
+
